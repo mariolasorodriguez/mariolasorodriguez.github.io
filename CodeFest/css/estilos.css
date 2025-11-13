@@ -27,11 +27,11 @@ header {
     background: #111; /* Un poco más negro que el fondo */
     padding: 20px 0;
     text-align: center;
-    border-bottom: 3px solid #ffb700; /* Color acento "CodeFest" */
+    border-bottom: 3px solid #007bff; /* Color acento "CodeFest" */
 }
 
 header h1 {
-    color: #ffb700; /* Color acento */
+    color: #007bff; /* Color acento */
     margin-bottom: 5px;
 }
 
@@ -78,7 +78,7 @@ nav ul li a {
 }
 
 nav ul li a:hover {
-    color: #ffb700; /* Cambia al color acento al pasar el ratón */
+    color: #007bff; /* Cambia al color acento al pasar el ratón */
 }
 
 /* --- CONTENIDO PRINCIPAL Y MULTIMEDIA --- */
@@ -88,7 +88,7 @@ main {
 
 /* Títulos de sección */
 h2, h3 {
-    color: #ffb700;
+    color: #007bff;
     margin-bottom: 15px;
     border-bottom: 2px solid #444;
     padding-bottom: 5px;
@@ -117,7 +117,7 @@ th, td {
 
 thead, tfoot {
     background-color: #333; /* Fondo oscuro para cabecera y pie de tabla */
-    color: #ffb700;
+    color: #007bff;
     font-size: 1.1em;
     text-align: center;
 }
@@ -154,7 +154,7 @@ fieldset {
 legend {
     font-weight: bold;
     font-size: 1.3em;
-    color: #ffb700;
+    color: #007bff;
     padding: 0 10px; /* Espacio para que "flote" sobre el borde */
 }
 
@@ -189,7 +189,7 @@ button[type="submit"] {
     display: block;
     width: 100%;
     padding: 15px;
-    background-color: #ffb700; /* Color acento */
+    background-color: #007bff; /* Color acento */
     color: #111; /* Texto oscuro para contraste */
     border: none;
     border-radius: 5px;
@@ -201,4 +201,40 @@ button[type="submit"] {
 
 button[type="submit"]:hover {
     background-color: #fff; /* Cambio drástico al pasar el ratón */
+}
+
+.btn-link {
+    display: inline-block;
+    padding: 0.75em 1.5em;
+    background-color: #007bff;       /* Azul principal */
+    color: #fff;                     /* Texto blanco */
+    text-decoration: none;           /* Quita el subrayado */
+    border-radius: 8px;              /* Bordes redondeados */
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;       /* Animación suave */
+}
+
+/* Efecto al pasar el mouse */
+.btn-link:hover {
+    background-color: #0056b3;       /* Azul más oscuro */
+    transform: translateY(-2px);     /* Leve elevación */
+}
+
+/* Efecto al hacer clic */
+.btn-link:active {
+    background-color: #004080;
+    transform: translateY(0);
+}
+
+/* Variante opcional: botón con borde */
+.btn-outline {
+    background-color: transparent;
+    color: #007bff;
+    border: 2px solid #007bff;
+}
+
+.btn-outline:hover {
+    background-color: #007bff;
+    color: #fff;
 }
