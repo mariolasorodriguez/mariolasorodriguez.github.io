@@ -1,0 +1,46 @@
+body {
+    background-color: #B5F4FF;
+    font-family: Helvetica, sans-serif;
+}
+
+h1 {
+    font-family: Helvetica , sans-serif;
+}
+
+header nav {
+    background-color: #007bff;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+}
+
+nav a:hover {
+    color: mediumaquamarine;
+}
+
+#contenido {
+    padding: 10px;
+    text-align: center;
+}
+
+#contenido h2 {
+    font-size: 30px;
+}
+
+#contenido p {
+    font-size: 18px;
+}
+
+#contenido img {
+    max-width: 50%;
+    height: auto;
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 7px;
+}
