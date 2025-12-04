@@ -1,0 +1,13 @@
+body {
+    background-color: #4a4a4a;
+
+}
+
+.tarjeta {
+    background-color: #f5f5f5;
+}
+
+.receta {
+    display: flex;
+    justify-content: space-evenly;
+}
