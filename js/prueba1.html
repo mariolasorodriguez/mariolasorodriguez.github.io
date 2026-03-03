@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    // let ciudad="Sevilla";
+    // const pais="España";
+    // console.log("Vivo en " + ciudad + " que está en " + pais);
+    //
+    // let nombre = prompt("¿Cuál es tu nombre?");
+    // alert("Hola " + nombre + ", bienvenido a JavaScript");
+
+    let miEdad = prompt("¿Cuántos años tienes?");
+    let limite = false;
+    if (miEdad >= 18) {
+        limite = true;
+    } else {
+        limite = false;
+    }
+    alert(limite ? "Eres mayor de edad" : "Eres menor de edad");
+
+    let nombreInvitado = prompt("¿Usuario?");
+    alert(nombreInvitado === "admin" ? "Acceso Total" : "Acceso Limitado");
+
+
+</script>
+</body>
+</html>
