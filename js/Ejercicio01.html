@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+
+<form>
+  <input type="text" id="nombre" placeholder="Nombre">
+  <input type="number" id="edad" placeholder="Edad">
+  <br>
+  <hr/>
+  <input type="number" id="num1" placeholder="Número 1">
+  <input type="number" id="num2" placeholder="Número 2">
+  <br><br>
+  <button type="button" onclick="procesar()">Calcular</button>
+</form>
+
+<div id="resultado"></div>
+
+<script>
+  function procesar() {
+    const nombre = document.getElementById("nombre").value;
+    const edad = document.getElementById("edad").value;
+    const n1 = parseFloat(document.getElementById("num1").value);
+    const n2 = parseFloat(document.getElementById("num2").value);
+
+    let suma = n1 + n2;
+    let resta = n1 - n2;
+    let multi = n1 * n2;
+    let divi = n1 / n2;
+
+    document.getElementById("resultado").innerHTML =
+            "<p>Mi nombre es " + nombre + " y tengo " + edad + " años.</p>" +
+            "Suma: " + suma + "<br>" +
+            "Resta: " + resta + "<br>" +
+            "Multiplicación: " + multi + "<br>" +
+            "División: " + divi;
+  }
+</script>
+
+</body>
+</html>

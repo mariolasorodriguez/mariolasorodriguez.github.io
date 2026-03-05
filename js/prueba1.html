@@ -5,26 +5,46 @@
     <title>Title</title>
 </head>
 <body>
+<h1 id="titulo">Hola Mundo</h1>
+<button class="botonazul">Azul</button>
+<button class="botonrojo">Rojo</button>
+<button class="botonamarillo">Amarillo</button>
+<button class="botonverde">Verde</button>
+
 <script>
-    // let ciudad="Sevilla";
-    // const pais="España";
-    // console.log("Vivo en " + ciudad + " que está en " + pais);
-    //
-    // let nombre = prompt("¿Cuál es tu nombre?");
-    // alert("Hola " + nombre + ", bienvenido a JavaScript");
+    const titulo = document.getElementById('titulo');
 
-    let miEdad = prompt("¿Cuántos años tienes?");
-    let limite = false;
-    if (miEdad >= 18) {
-        limite = true;
-    } else {
-        limite = false;
-    }
-    alert(limite ? "Eres mayor de edad" : "Eres menor de edad");
+    const botonAzul = document.querySelector(".botonazul");
+    botonAzul.style.backgroundColor = "blue";
+    botonAzul.style.color = "white";
 
-    let nombreInvitado = prompt("¿Usuario?");
-    alert(nombreInvitado === "admin" ? "Acceso Total" : "Acceso Limitado");
+    const botonRojo = document.querySelector(".botonrojo");
+    botonRojo.style.backgroundColor = "red";
+    botonRojo.style.color = "white";
 
+    const botonAmarillo = document.querySelector(".botonamarillo");
+    botonAmarillo.style.backgroundColor = "yellow";
+    botonAmarillo.style.color = "white";
+
+    const botonVerde = document.querySelector(".botonverde");
+    botonAmarillo.style.backgroundColor = "green";
+    botonAmarillo.style.color = "white";
+
+    botonAzul.addEventListener("click", function() {
+        titulo.style.color = "blue";
+    });
+
+    botonRojo.addEventListener("click", function() {
+        titulo.style.color = "red";
+    });
+
+    botonAmarillo.addEventListener("click", function() {
+        titulo.style.color = "yellow";
+    });
+
+    botonVerde.addEventListener("click", function() {
+        titulo.style.color = "green";
+    });
 
 </script>
 </body>
