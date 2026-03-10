@@ -13,13 +13,15 @@
   <input type="number" id="num1" placeholder="Número 1">
   <input type="number" id="num2" placeholder="Número 2">
   <br><br>
-  <button type="button" onclick="procesar()">Calcular</button>
+  <button type="button" id="btnCalcular">Calcular</button>
 </form>
 
 <div id="resultado"></div>
 
 <script>
-  function procesar() {
+  const boton = document.getElementById("btnCalcular");
+
+  boton.addEventListener("click", () => {
     const nombre = document.getElementById("nombre").value;
     const edad = document.getElementById("edad").value;
     const n1 = parseFloat(document.getElementById("num1").value);
@@ -36,7 +38,7 @@
             "Resta: " + resta + "<br>" +
             "Multiplicación: " + multi + "<br>" +
             "División: " + divi;
-  }
+  });
 </script>
 
 </body>
