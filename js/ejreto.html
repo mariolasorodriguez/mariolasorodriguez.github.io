@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reto JSON</title>
+    <style>
+        table,td, tr, th, td {
+            border: black 1px solid;
+        }
+    </style>
+</head>
+<body>
+    <div id="contenedor">
+        <form id="formulario">
+            <label for="Nombre">Nombre:</label>
+            <input type="text" id="Nombre"><br><br>
+
+            <label for="Apellidos">Apellidos:</label>
+            <input type="text" id="Apellidos"><br><br>
+
+            <label for="Edad">Edad:</label>
+            <input type="number" id="Edad"><br><br>
+
+            <label for="Ciudad">Ciudad:</label>
+            <input type="text" id="Ciudad"><br><br>
+
+            <button type="button" id="MostrarDatos">Mostrar Datos</button>
+        </form>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Apellidos</th>
+                    <th>Edad</th>
+                    <th>Ciudad</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td id="NombreMostrado"></td>
+                    <td id="ApellidosMostrado"></td>
+                    <td id="EdadMostrado"></td>
+                    <td id="CiudadMostrado"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div id="estadisticas">
+            <h3>Estadísticas</h3>
+            <div class="estadistica-item">Total de personas: <span id="totalPersonas">0</span></div>
+            <div class="estadistica-item">Suma de edades: <span id="edadSuma">0</span></div>
+            <div class="estadistica-item">Edad promedio: <span id="edadPromedio">0</span></div>
+            <div class="estadistica-item">Edad máxima: <span id="edadMaxima">0</span></div>
+            <div class="estadistica-item">Edad mínima: <span id="edadMinima">0</span></div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-4.0.0.min.js" integrity="sha256-OaVG6prZf4v69dPg6PhVattBXkcOWQB62pdZ3ORyrao=" crossorigin="anonymous"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Array para almacenar todas las personas
+            var personas = [];
+
+            // Función para serializar
+            function serializar(obj) {
+                return JSON.stringify(obj);
+            }
+
+            // Función para deserializar
+            function deserializar(str) {
+                return JSON.parse(str);
+            }
+
+            // Función para calcular suma de edades
+            function calcularSuma(edades) {
+                return edades.reduce((sum, edad) => sum + parseInt(edad), 0);
+            }
+
+            // Función para calcular promedio de edades
+            function calcularPromedio(edades) {
+                if (edades.length === 0) return 0;
+                return (calcularSuma(edades) / edades.length).toFixed(2);
+            }
+
+            // Función para calcular edad máxima
+            function calcularMaximo(edades) {
+                if (edades.length === 0) return 0;
+                return Math.max(...edades.map(e => parseInt(e)));
+            }
+
+            // Función para calcular edad mínima
+            function calcularMinimo(edades) {
+                if (edades.length === 0) return 0;
+                return Math.min(...edades.map(e => parseInt(e)));
+            }
+
+            // Función para actualizar estadísticas
+            function actualizarEstadisticas() {
+                var edades = personas.map(p => p.edad);
+                var suma = calcularSuma(edades);
+                var promedio = calcularPromedio(edades);
+                var maximo = calcularMaximo(edades);
+                var minimo = calcularMinimo(edades);
+
+                $('#totalPersonas').text(personas.length);
+                $('#edadPromedio').text(promedio);
+                $('#edadSuma').text(suma);
+                $('#edadMaxima').text(maximo);
+                $('#edadMinima').text(minimo);
+            }
+
+            // Objeto JSON inicial
+            var persona = {nombre: "Alberto", apellidos: "Ramos", edad: "26", ciudad: "Granada"};
+
+            // Serialización usando la función
+            var jsonString = serializar(persona);
+            console.log("Mensaje serializado: " + jsonString);
+
+            // Deserialización usando la función
+            var personaDeserializada = deserializar(jsonString);
+            console.log("Mensaje deserializado: ", personaDeserializada);
+
+            // Agregar la persona inicial al array
+            personas.push(personaDeserializada);
+
+            // Insertar datos iniciales en la tabla
+            var filaInicial = $('<tr></tr>');
+            filaInicial.append('<td>' + personaDeserializada.nombre + '</td>');
+            filaInicial.append('<td>' + personaDeserializada.apellidos + '</td>');
+            filaInicial.append('<td>' + personaDeserializada.edad + '</td>');
+            filaInicial.append('<td>' + personaDeserializada.ciudad + '</td>');
+            $('table tbody').html(filaInicial);
+
+            // Actualizar estadísticas iniciales
+            actualizarEstadisticas();
+
+            // Mostrar datos en la tabla al hacer clic en el botón
+            $('#MostrarDatos').click(function() {
+                var nombre = $('#Nombre').val();
+                var apellidos = $('#Apellidos').val();
+                var edad = $('#Edad').val();
+                var ciudad = $('#Ciudad').val();
+
+                if (!nombre || !apellidos || !edad || !ciudad) {
+                    alert('Por favor, complete todos los campos');
+                    return;
+                }
+
+                // Crear objeto persona con los datos del formulario
+                var personaFormulario = {
+                    nombre: nombre,
+                    apellidos: apellidos,
+                    edad: edad,
+                    ciudad: ciudad
+                };
+
+                // Serializar y deserializar el objeto para simular el proceso
+                var jsonStringFormulario = serializar(personaFormulario);
+                var personaDeserializadaFormulario = deserializar(jsonStringFormulario);
+
+                // Agregar la persona al array
+                personas.push(personaDeserializadaFormulario);
+
+                // Crear nueva fila en la tabla
+                var nuevaFila = $('<tr></tr>');
+                nuevaFila.append('<td>' + personaDeserializadaFormulario.nombre + '</td>');
+                nuevaFila.append('<td>' + personaDeserializadaFormulario.apellidos + '</td>');
+                nuevaFila.append('<td>' + personaDeserializadaFormulario.edad + '</td>');
+                nuevaFila.append('<td>' + personaDeserializadaFormulario.ciudad + '</td>');
+                $('table tbody').append(nuevaFila);
+
+                // Limpiar formulario
+                $('#Nombre').val('');
+                $('#Apellidos').val('');
+                $('#Edad').val('');
+                $('#Ciudad').val('');
+
+                // Actualizar estadísticas
+                actualizarEstadisticas();
+            });
+        });
+    </script>
+</body>
+</html>
