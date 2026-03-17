@@ -48,21 +48,26 @@
     });
 
     function verificarNumero() {
-        if (numeroRandom === numeroUsuario) {
-            puntos += 10;
-            carteraDePuntos = 10;
-            partidas++;
-            document.getElementById("partidas").innerHTML = partidas;
-            document.getElementById("puntos").innerHTML = puntos;
-            document.getElementById("carteradepuntos").innerHTML = carteraDePuntos;
-            document.getElementById("estadoPartida").innerHTML = "¡Felicidades! Has adivinado el número.";
-        } else {
-            carteraDePuntos -= 1;
-            partidas++;
-            document.getElementById("partidas").innerHTML = partidas;
-            document.getElementById("carteradepuntos").innerHTML = carteraDePuntos;
-            document.getElementById("estadoPartida").innerHTML = "Número incorrecto. Intenta de nuevo.";
-        }
+        if (carteraDePuntos <= 0) {
+            bloquearBotonVerificar();
+            document.getElementById("estadoPartida").innerHTML = "No tienes más intentos, reinicia la partida.";
+            } else if (numeroRandom === numeroUsuario) {
+                puntos += 10;
+                carteraDePuntos = 10;
+                partidas++;
+                document.getElementById("partidas").innerHTML = partidas;
+                document.getElementById("puntos").innerHTML = puntos;
+                document.getElementById("carteradepuntos").innerHTML = carteraDePuntos;
+                document.getElementById("estadoPartida").innerHTML = "¡Felicidades! Has adivinado el número.";
+                bloquearBotonVerificar()
+            } else {
+                carteraDePuntos -= 1;
+                partidas++;
+                document.getElementById("partidas").innerHTML = partidas;
+                document.getElementById("carteradepuntos").innerHTML = carteraDePuntos;
+                let pista = numeroUsuario > numeroRandom ? "El número es MENOR." : "El número es MAYOR.";
+                document.getElementById("estadoPartida").innerHTML = `Número incorrecto. ${pista} Intenta de nuevo.`;
+            }
     }
 
     function reiniciarPartida() {
@@ -80,11 +85,8 @@
 
 
     function desbloquearBotonVerificar() {
-        document.getElementById("botonVerificar").enabled = true;
+        document.getElementById("botonVerificar").disabled = false;
     }
-
-
-
 </script>
 </body>
 </html>
