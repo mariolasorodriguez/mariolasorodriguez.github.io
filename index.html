@@ -1,87 +1,302 @@
 <!DOCTYPE html>
-<html lang=es>
-  <head>
+<html lang="es">
+<head>
     <meta charset="UTF-8">
     <meta name="description" content="Free Web tutorials">
     <meta name="keywords" content="HTML, CSS, JavaScript">
     <meta name="author" content="Mario Laso">
     <title>LM HTML</title>
-      <style>
-          body {
-              font-family: Helvetica, sans-serif;
-              text-align: center;
-              animation: colorShift 8s infinite alternate;
-          }
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --fondo: #0f0f0f;
+            --superficie: #1a1a1a;
+            --superficie2: #242424;
+            --borde: #2e2e2e;
+            --texto: #e8e8e8;
+            --texto-tenue: #6b6b6b;
+            --acento-html: #f4c55a;
+            --acento-css: #6ec6f5;
+            --acento-js: #a8e63d;
+            --fondo-etiqueta: #1e1e1e;
+        }
 
-          .bg-fade {
-              height: 100%;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              color: white;
-              font-family: sans-serif;
-          }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-          @keyframes colorShift {
-              0%   { background-color: #ff6b6b; } /* rojo */
-              33%  { background-color: #ffd93d; } /* amarillo */
-              66%  { background-color: #6bf178; } /* verde */
-              100% { background-color: #6bb7ff; } /* azul */
-          }
+        body {
+            background: var(--fondo);
+            color: var(--texto);
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh;
+            padding: 3rem 2rem 5rem;
+        }
 
-          ul {
-              list-style: none;
-              padding: 0;
-              margin: 0;
-              width: 50%;
-              width: fit-content;
-              margin: 0 auto;
-              padding: 0;
-          }
-          li {
-              background: #f5f7fa;
-              font-family: verdana;
-              margin: 8px 0;
-              padding: 12px 18px;
-              border-radius: 8px;
-              color: #333;
-              font-weight: 500;
-              transition: all 0.3s ease;
-          }
-          li:hover {
-              background: #888c88;
-              color: #ffffff;
-              transform: translateX(5px);
-          }
+        /* Capa de ruido */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-color: #2f2f2f;
+            pointer-events: none;
+            z-index: 0;
+        }
 
-          #botonjs {
-                background: #818181;
-                color: white;
-                font-weight: bold;
-          }
+        .contenedor {
+            position: relative;
+            z-index: 1;
+            max-width: 960px;
+            margin: 0 auto;
+        }
 
-      </style>
-  </head>
-  <body>
-    <h1>Lenguaje de Marcas - HTML Y JS</h1>
-    <h2>Mario Laso Rodriguez</h2>
-    <br/>
-    <ul>
-        <li><a href="./web/about.html">Sobre mi</a></li>
-        <li><a href="./web/ejercicio1.html">Ejercicio 2 (Tablas y enlaces)</a></li>
-        <li><a href="./web/contacto.html">Ejercicio 3 (Formularios)</a></li>
-        <li><a href="./web/ejercicio5.html">Ejercicio 5 (Embed code)</a></li>
-        <li><a href="./web/ejercicio6.html">Ejercicio 6 (Multimedia)</a></li>
-        <li><a href="./CodeFest/index.html">Festival</a></li>
-        <li><a href="./web/iniciacion.html">Iniciación CSS</a></li>
-        <li><a href="./web/ejerciciocss1.html">Ejercicio CSS 1</a></li>
-        <li><a href=".web/imagenesconestilo.html">Ejercicio Imágenes con Estilo</a></li>
-        <li><a href=".web/cajasimple.html">Ejercicio Caja Simple</a></li>
-        <li id="botonjs"><a href=".js/indexJS.html">JavaScript</a></li>
-    </ul>
-  </body>
+        /* Cabecera */
+        header {
+            margin-bottom: 3rem;
+            border-bottom: 1px solid var(--borde);
+            padding-bottom: 2rem;
+        }
+
+        .subtitulo-cabecera {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            color: var(--texto-tenue);
+            text-transform: uppercase;
+            margin-bottom: 0.6rem;
+        }
+
+        h1 {
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(1.4rem, 3vw, 2rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            color: var(--texto);
+        }
+
+        h1 span.resalte-html { color: var(--acento-html); }
+        h1 span.resalte-css  { color: var(--acento-css); }
+
+        .autor {
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--texto-tenue);
+            font-weight: 300;
+        }
+
+        /* Maquetación principal */
+        .diseno {
+            display: grid;
+            grid-template-columns: 1fr 220px;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        /* Etiqueta de sección */
+        .etiqueta-seccion {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--texto-tenue);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .etiqueta-seccion::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--borde);
+        }
+
+        /* Lista de ejercicios */
+        ul.lista-ejercicios {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        ul.lista-ejercicios li {
+            background: var(--superficie);
+            border: 1px solid var(--borde);
+            border-radius: 8px;
+            transition: all 0.22s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        ul.lista-ejercicios li::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 3px;
+            background: var(--acento-html);
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        ul.lista-ejercicios li:hover {
+            border-color: #3e3e3e;
+            background: var(--superficie2);
+            transform: translateX(4px);
+        }
+
+        ul.lista-ejercicios li:hover::before {
+            opacity: 1;
+        }
+
+        ul.lista-ejercicios li a {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 13px 16px;
+            text-decoration: none;
+            color: var(--texto);
+            font-size: 0.88rem;
+            font-weight: 400;
+        }
+
+        ul.lista-ejercicios li a .etiqueta {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 0.08em;
+            color: var(--texto-tenue);
+            background: var(--fondo-etiqueta);
+            border: 1px solid var(--borde);
+            padding: 2px 7px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        ul.lista-ejercicios li a:hover .etiqueta {
+            color: var(--acento-html);
+            border-color: var(--acento-html);
+        }
+
+        /* Panel JS */
+        .panel-js {
+            position: sticky;
+            top: 2rem;
+        }
+
+        .tarjeta-js {
+            background: #141a0e;
+            border: 1px solid #3a5a10;
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .tarjeta-js .icono-js {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--acento-js);
+            line-height: 1;
+        }
+
+        .tarjeta-js h3 {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--acento-js);
+            letter-spacing: -0.01em;
+        }
+
+        .tarjeta-js p {
+            font-size: 0.78rem;
+            color: #7a9b55;
+            line-height: 1.6;
+        }
+
+        .tarjeta-js a.boton-js {
+            display: block;
+            text-align: center;
+            background: var(--acento-js);
+            color: #0f1a05;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 11px 16px;
+            border-radius: 7px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .tarjeta-js a.boton-js:hover {
+            background: #c9f748;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(168, 230, 61, 0.25);
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .diseno {
+                grid-template-columns: 1fr;
+            }
+            .panel-js {
+                position: static;
+                order: -1;
+            }
+            .tarjeta-js {
+                flex-direction: row;
+                flex-wrap: wrap;
+                align-items: center;
+            }
+            .tarjeta-js .icono-js { font-size: 1.4rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="contenedor">
+    <header>
+        <p class="subtitulo-cabecera">Lenguaje de Marcas · 2025</p>
+        <h1>
+            <span class="resalte-html">HTML</span> &amp;
+            <span class="resalte-css">CSS</span> — Ejercicios
+        </h1>
+        <p class="autor">Mario Laso Rodríguez</p>
+    </header>
+
+    <div class="diseno">
+
+        <main>
+            <p class="etiqueta-seccion">Prácticas HTML &amp; CSS</p>
+            <ul class="lista-ejercicios">
+                <li><a href="./web/about.html"><span>Sobre mí</span><span class="etiqueta">HTML</span></a></li>
+                <li><a href="./web/ejercicio1.html"><span>Ejercicio 2 — Tablas y enlaces</span><span class="etiqueta">HTML</span></a></li>
+                <li><a href="./web/contacto.html"><span>Ejercicio 3 — Formularios</span><span class="etiqueta">HTML</span></a></li>
+                <li><a href="./web/ejercicio5.html"><span>Ejercicio 5 — Embed code</span><span class="etiqueta">HTML</span></a></li>
+                <li><a href="./web/ejercicio6.html"><span>Ejercicio 6 — Multimedia</span><span class="etiqueta">HTML</span></a></li>
+                <li><a href="./CodeFest/index.html"><span>Festival (CodeFest)</span><span class="etiqueta">HTML</span></a></li>
+                <li><a href="./web/iniciacion.html"><span>Iniciación CSS</span><span class="etiqueta">CSS</span></a></li>
+                <li><a href="./web/ejerciciocss1.html"><span>Ejercicio CSS 1</span><span class="etiqueta">CSS</span></a></li>
+                <li><a href="./web/imagenesconestilo.html"><span>Imágenes con estilo</span><span class="etiqueta">CSS</span></a></li>
+                <li><a href="./web/cajasimple.html"><span>Caja simple</span><span class="etiqueta">CSS</span></a></li>
+            </ul>
+        </main>
+
+        <aside class="panel-js">
+            <p class="etiqueta-seccion">Otro apartado</p>
+            <div class="tarjeta-js">
+                <div class="icono-js">JS</div>
+                <h3>JavaScript</h3>
+                <p>Ejercicios y prácticas de programación con JavaScript.</p>
+                <a href=".js/indexJS.html" class="boton-js">→ Ir a JS</a>
+            </div>
+        </aside>
+
+    </div>
+</div>
+</body>
 </html>
-
-
-
-
