@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        background-color: #87c5a9;
+    }
+    #contenedorPrincipal {
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        margin: 20px;
+    }
+    #juego {
+        background-color: #ffffff;
+        width: 300px;
+        align-items: center;
+        justify-content: center;
+        display: flex;
+    }
+
+    #estadoJuego {
+        background-color: #fdfdfd;
+        color: #1f9b1b;
+        width: 100px;
+        justify-content: center;
+    }
+    </style>
+</head>
+<body>
+<div id="contenedorPrincipal">
+    <h1>JUEGO DEL AHORCADO</h1>
+    <div id="juego"></div>
+    <p>Introduce la letra a buscar: </p>
+    <input type="text" id="letraInsertada" placeholder="Letra a buscar" maxlength="1">
+    <br>
+    <button type="button" id="botonComprobar">Comprobar</button>
+    <br>
+    <button type="button" id="botonReiniciar" onclick="reiniciarPartida()">Reiniciar</button>
+    <br>
+    <div id="estadoJuego"></div>
+</div>
+
+<script>
+    const palabras = ["javascript", "programacion", "desarrollo", "lenguajes"]
+
+    comenzarPartida();
+
+    document.getElementById("botonComprobar").addEventListener("click", function(){
+        comprobarLetra();
+    });
+
+    function comenzarPartida() {
+        let palabraOculta;
+        let numeroRandom = Math.floor(Math.random() * palabras.length);
+
+        console.log('Numero del array: ' + numeroRandom);
+
+        palabraOculta = palabras[numeroRandom];
+        console.log('Palabra Oculta: ' + palabraOculta);
+
+        console.log('Longitud de palabra: ' + palabraOculta.length);
+
+        let arrayPalabra = [];
+        for (let i = 0; i < palabraOculta.length; i++) {
+            arrayPalabra[i] = palabraOculta.charAt(i);
+        }
+
+        console.log(arrayPalabra.toString()); // Control
+
+        let arrayGuiones = [];
+        for (let i = 0; i < palabraOculta.length; i++) {
+            arrayGuiones[i] = "_ ";
+        }
+        console.log(arrayGuiones.toString());
+        const nuevoP = document.createElement("p");
+        nuevoP.textContent = arrayGuiones.toString();
+        document.getElementById("juego").appendChild(nuevoP);
+
+        console.log(arrayGuiones.length); // Control
+        console.log(arrayPalabra.length);
+    }
+
+    // La funcion comprobarLetra no he conseguido que recorra el array buscando la letra introducida
+    function comprobarLetra(palabraOculta, arrayPalabra, arrayGuiones) {
+        let letraIntroducida = document.getElementById("letraInsertada").value;
+        let longitudPalabra = palabraOculta.length;
+        // Esto deberia el array en busca de la palabra introducida letra por letra,
+        // si coincide se pone esa letra en el array de guiones
+        for (let i = 0; i < longitudPalabra; i++) {
+            for (let j = 0; j < longitudPalabra; j++) {
+                if (arrayPalabra[i] === letraIntroducida) {
+                    arrayGuiones[j] = arrayPalabra[i];
+                }
+            }
+        }
+
+        if (arrayGuiones === arrayPalabra) {
+            document.getElementById("estadoJuego").innerHTML = "¡Acertada!";
+            bloquearBotonVerificar();
+        }
+        document.getElementById("letraInsertada").value = '';
+    }
+
+    function reiniciarPartida() {
+        document.getElementById("estadoJuego").innerHTML = "<p>Reiniciando</p>"
+        location.reload();
+    }
+
+    function bloquearBotonComprobar() {
+        document.getElementById("botonComprobar").disabled = true;
+    }
+
+    function desbloquearBotonComprobar() {
+        document.getElementById("botonComprobar").disabled = false;
+    }
+</script>
+</body>
+</html>

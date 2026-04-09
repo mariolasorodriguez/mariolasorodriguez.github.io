@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perros</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding-top: 50px;
+        }
+        .imagen-perro {
+            max-width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 8px;
+            display: none;
+        }
+        .contenedor-app {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+<div class="contenedor-app text-center">
+    <div class="card shadow p-4">
+        <h2 class="mb-4 text-primary">Generador de Perros</h2>
+
+        <div class="mb-3">
+            <select id="select" class="form-select form-select-lg">
+                <option value="random" selected>Perro aleatorio</option>
+            </select>
+        </div>
+
+        <div class="mb-4">
+            <button id="btn" class="btn btn-primary btn-lg w-100">Generar perro</button>
+        </div>
+
+        <div class="contenedor-imagen">
+            <img src="" alt="Imagen de un perro" id="img" class="imagen-perro shadow-sm">
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const selectorRazas = document.getElementById('select');
+        const botonGenerar = document.getElementById('btn');
+        const imagenPerro = document.getElementById('img');
+
+        function capitalizar(texto) {
+            return texto.charAt(0).toUpperCase() + texto.slice(1);
+        }
+
+        async function cargarListaRazas() {
+            try {
+                const respuesta = await fetch('https://dog.ceo/api/breeds/list/all');
+                const datos = await respuesta.json();
+
+                if (datos.status === "success") {
+                    const razas = datos.message;
+
+                    for (const raza in razas) {
+                        const subRazas = razas[raza];
+
+                        if (subRazas.length === 0) {
+                            const opcion = document.createElement('option');
+                            opcion.value = raza;
+                            opcion.textContent = capitalizar(raza);
+                            selectorRazas.appendChild(opcion);
+                        } else {
+                            subRazas.forEach(subRaza => {
+                                const opcion = document.createElement('option');
+                                opcion.value = `${raza}/${subRaza}`;
+                                opcion.textContent = `${capitalizar(raza)} (${capitalizar(subRaza)})`;
+                                selectorRazas.appendChild(opcion);
+                            });
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error("Error al cargar la lista de razas:", error);
+            }
+        }
+
+
+        async function obtenerImagenPerro(url) {
+            try {
+                const respuesta = await fetch(url);
+                const datos = await respuesta.json();
+
+                if (datos.status === "success") {
+                    imagenPerro.src = datos.message;
+                    imagenPerro.style.display = 'inline-block';
+                } else {
+                    console.error("La API devolvió un error:", datos.message);
+                }
+            } catch (error) {
+                console.error("Error en la solicitud de red:", error);
+            }
+        }
+
+        function manejarPeticionImagen() {
+            const valorSeleccionado = selectorRazas.value;
+
+            if (valorSeleccionado === "random") {
+                obtenerImagenPerro('https://dog.ceo/api/breeds/image/random');
+            } else {
+                obtenerImagenPerro(`https://dog.ceo/api/breed/${valorSeleccionado}/images/random`);
+            }
+        }
+
+        cargarListaRazas();
+
+        botonGenerar.addEventListener('click', manejarPeticionImagen);
+        selectorRazas.addEventListener('change', manejarPeticionImagen);
+    });
+</script>
+</body>
+</html>
