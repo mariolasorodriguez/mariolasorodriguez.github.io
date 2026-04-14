@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Serialización JSON</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+
+<h1><b>Consulta de Usuarios</b></h1>
+<form class="mb-3">
+    <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input type="text" class="form-control" id="nombre" placeholder="Introduce el nombre">
+        <label for="nombre">Apellidos:</label>
+        <input type="text" class="form-control" id="apellidos" placeholder="Introduce tus apellidos">
+        <label for="nombre">Edad:</label>
+        <input type="number" class="form-control" id="edad" placeholder="Introduce tu edad">
+        <label for="nombre">Ciudad:</label>
+        <input type="text" class="form-control" id="ciudad" placeholder="Introduce tu ciudad">
+
+    </div>
+</form>
+<button class="btn btn-primary" onclick="ejecutar()">Consultar</button>
+
+<div id="resultado"></div>
+
+<script>
+    const persona = {
+        nombre: "Ana",
+        apellidos: "García López",
+        edad: 28,
+        ciudad: "Sevilla"
+    };
+
+    function ejecutar() {
+        const json = JSON.stringify(persona);
+        console.log("JSON serializado:", json);
+
+        const obj = JSON.parse(json);
+        console.log("Objeto deserializado:", obj);
+
+        const div = document.getElementById("resultado");
+        div.innerHTML = "";
+
+        const tabla = document.createElement("table" );
+        tabla.className = "table table-striped table-bordered table-hover";
+
+        const encabezado = tabla.insertRow();
+        ["Nombre", "Apellidos", "Edad", "Ciudad"].forEach(texto => {
+            const th = document.createElement("th");
+            th.textContent = texto;
+            encabezado.appendChild(th);
+        });
+
+        const fila = tabla.insertRow();
+        [obj.nombre, obj.apellidos, obj.edad, obj.ciudad].forEach(valor => {
+            const td = fila.insertCell();
+            td.textContent = valor;
+        });
+
+        div.appendChild(tabla);
+    }
+</script>
+</body>
+</html>
