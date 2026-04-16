@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Serialización JSON</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+          crossorigin="anonymous">
+</head>
+<body class="p-4">
+
+<h1><b>Consulta de Usuarios</b></h1>
+
+<form class="mb-3" id="formulario">
+    <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input type="text" class="form-control" id="nombre" placeholder="Introduce el nombre">
+
+        <label for="apellidos">Apellidos:</label>
+        <input type="text" class="form-control" id="apellidos" placeholder="Introduce tus apellidos">
+
+        <label for="edad">Edad:</label>
+        <input type="number" class="form-control" id="edad" placeholder="Introduce tu edad">
+
+        <label for="ciudad">Ciudad:</label>
+        <input type="text" class="form-control" id="ciudad" placeholder="Introduce tu ciudad">
+    </div>
+</form>
+
+<button class="btn btn-primary" id="btnConsultar">Consulta y mira la consola</button>
+
+<div id="resultado" class="mt-4"></div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $("#btnConsultar").on("click", function () {
+        const persona = {
+            nombre: $("#nombre").val().trim(),
+            apellidos: $("#apellidos").val().trim(),
+            edad: $("#edad").val().trim(),
+            ciudad: $("#ciudad").val().trim()
+        };
+
+        if (!persona.nombre && !persona.apellidos && !persona.edad && !persona.ciudad) {
+            alert("El formulario esta vacio.");
+            return;
+        }
+
+        const json = JSON.stringify(persona);
+        console.log("JSON serializado:", json);
+
+        const obj = JSON.parse(json);
+        console.log("Objeto deserializado:", obj);
+
+        if ($("#tablaUsuarios").length === 0) {
+            const $tabla = $("<table>")
+                .attr("id", "tablaUsuarios")
+                .addClass("table table-striped table-bordered table-hover");
+
+            const $thead = $("<thead>").append(
+                $("<tr>").append(
+                    ["Nombre", "Apellidos", "Edad", "Ciudad"].map(texto =>
+                        $("<th>").text(texto)
+                    )
+                )
+            );
+
+            const $tbody = $("<tbody>").attr("id", "cuerpoTabla");
+
+            $tabla.append($thead).append($tbody);
+            $("#resultado").append($tabla);
+        }
+
+        const $fila = $("<tr>").append(
+            [obj.nombre, obj.apellidos, obj.edad, obj.ciudad].map(valor =>
+                $("<td>").text(valor || "—")
+            )
+        );
+
+        $("#cuerpoTabla").append($fila);
+        $("#formulario")[0].reset();
+    });
+</script>
+</body>
+</html>
