@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Megareto</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+          crossorigin="anonymous">
+</head>
+<body class="p-4">
+
+<h1><b>Añade un usuario</b></h1>
+
+<div class="row">
+    <div class="col-md-5">
+        <form class="mb-3" id="formUsuarios">
+            <div class="form-group">
+                <label for="nombre">Nombre:</label>
+                <input type="text" class="form-control" id="nombre" placeholder="Introduce el nombre">
+
+                <label for="apellidos">Apellidos:</label>
+                <input type="text" class="form-control" id="apellidos" placeholder="Introduce tus apellidos">
+
+                <label for="edad">Edad:</label>
+                <input type="number" class="form-control" id="edad" placeholder="Introduce tu edad">
+
+                <label for="ciudad">Ciudad:</label>
+                <input type="text" class="form-control" id="ciudad" placeholder="Introduce tu ciudad">
+            </div>
+        </form>
+    </div>
+</div>
+
+<button class="btn btn-primary" id="btnConsultar">Añadir Usuario</button>
+
+<div class="row mt-4">
+    <div class="col-md-8">
+        <div id="resultado"></div>
+    </div>
+    <div class="col-md-4">
+        <div id="panelEstadisticas" class="card" style="display: none;">
+            <div class="card-header bg-info text-white">
+                <strong>Estadísticas de Edad</strong>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Total: <span id="statTotal" class="font-weight-bold">0</span></li>
+                <li class="list-group-item">Media: <span id="statMedia" class="font-weight-bold">0</span></li>
+                <li class="list-group-item">Máxima: <span id="statMax" class="font-weight-bold">0</span></li>
+                <li class="list-group-item">Mínima: <span id="statMin" class="font-weight-bold">0</span></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    let listaUsuarios = [];
+
+    function actualizarEstadisticas() {
+        if (listaUsuarios.length === 0) {
+            $("#panelEstadisticas").hide();
+            return;
+        }
+
+        $("#panelEstadisticas").show();
+
+        const edades = listaUsuarios.map(usuario => parseInt(usuario.edad, 10));
+
+        const total = edades.reduce((acumulador, actual) => acumulador + actual, 0);
+        const media = total / edades.length;
+        const max = Math.max(...edades);
+        const min = Math.min(...edades);
+
+        $("#statTotal").text(total);
+        $("#statMedia").text(media.toFixed(2));
+        $("#statMax").text(max);
+        $("#statMin").text(min);
+    }
+
+    $("#btnConsultar").on("click", function () {
+        const campos = [
+            { id: "nombre",    label: "Nombre" },
+            { id: "apellidos", label: "Apellidos" },
+            { id: "edad",      label: "Edad" },
+            { id: "ciudad",    label: "Ciudad" }
+        ];
+
+        for (const campo of campos) {
+            if (!$("#" + campo.id).val().trim()) {
+                alert("El campo " + campo.label + " es obligatorio.");
+                $("#" + campo.id).focus();
+                return;
+            }
+        }
+
+        const persona = {
+            nombre:    $("#nombre").val().trim(),
+            apellidos: $("#apellidos").val().trim(),
+            edad:      $("#edad").val().trim(),
+            ciudad:    $("#ciudad").val().trim()
+        };
+
+        listaUsuarios.push(persona);
+
+        const json = JSON.stringify(persona);
+        console.log("JSON serializado:", json);
+
+        const obj = JSON.parse(json);
+        console.log("Objeto deserializado:", obj);
+        console.log("Estado actual del array:", listaUsuarios);
+
+        if ($("#tablaUsuarios").length === 0) {
+            const $tabla = $("<table>")
+                .attr("id", "tablaUsuarios")
+                .addClass("table table-striped table-bordered table-hover");
+
+            const $thead = $("<thead>").append(
+                $("<tr>").append(
+                    ["Nombre", "Apellidos", "Edad", "Ciudad"].map(texto =>
+                        $("<th>").text(texto)
+                    )
+                )
+            );
+
+            const $tbody = $("<tbody>").attr("id", "cuerpoTabla");
+
+            $tabla.append($thead).append($tbody);
+            $("#resultado").append($tabla);
+        }
+
+        const $fila = $("<tr>")
+            .css("cursor", "pointer")
+            .attr("title", "Haz clic para eliminar esta fila")
+            .on("click", function () {
+                const indice = $(this).index();
+
+                listaUsuarios.splice(indice, 1);
+                console.log("Array tras la eliminación:", listaUsuarios);
+
+                $(this).remove();
+
+                actualizarEstadisticas();
+            });
+
+        $fila.append($("<td>").text(obj.nombre));
+        $fila.append($("<td>").text(obj.apellidos));
+        $fila.append($("<td>").text(obj.edad));
+        $fila.append($("<td>").text(obj.ciudad));
+
+        $("#cuerpoTabla").append($fila);
+
+        actualizarEstadisticas();
+
+        $("#formUsuarios").trigger("reset");
+    });
+</script>
+</body>
+</html>
