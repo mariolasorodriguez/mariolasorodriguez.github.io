@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Prueba ajax</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+          crossorigin="anonymous">
+</head>
+<body class="p-4">
+
+<h1><b>Añade un usuario</b></h1>
+
+<div class="row">
+    <div class="col-md-7">
+        <form class="mb-3" id="formUsuarios">
+            <div class="form-group">
+                <label for="nombre">Nombre:</label>
+                <input type="text" class="form-control mb-2" id="nombre" placeholder="Introduce el nombre">
+
+                <label for="apellidos">Apellidos:</label>
+                <input type="text" class="form-control mb-2" id="apellidos" placeholder="Introduce tus apellidos">
+
+                <label for="edad">Edad:</label>
+                <input type="number" class="form-control mb-2" id="edad" placeholder="Introduce tu edad">
+
+                <label for="ciudad">Ciudad:</label>
+                <input type="text" class="form-control mb-3" id="ciudad" placeholder="Introduce tu ciudad">
+
+                <label><strong>Hobbies:</strong></label>
+                <div class="d-flex flex-wrap">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="hobbies[]" id="hobby_deporte" value="Deporte">
+                        <label class="form-check-label" for="hobby_deporte">Deporte</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="hobbies[]" id="hobby_lectura" value="Lectura">
+                        <label class="form-check-label" for="hobby_lectura">Lectura</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="hobbies[]" id="hobby_musica" value="Música">
+                        <label class="form-check-label" for="hobby_musica">Música</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="hobbies[]" id="hobby_juegos" value="Juegos">
+                        <label class="form-check-label" for="hobby_juegos">Juegos</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="hobbies[]" id="hobby_cine" value="Cine">
+                        <label class="form-check-label" for="hobby_cine">Cine</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="hobbies[]" id="hobby_teatro" value="Teatro">
+                        <label class="form-check-label" for="hobby_teatro">Teatro</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="hobbies[]" id="hobby_coleccionismo" value="Coleccionismo">
+                        <label class="form-check-label" for="hobby_coleccionismo">Coleccionismo</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="hobbies[]" id="hobby_bricolaje" value="Bricolaje">
+                        <label class="form-check-label" for="hobby_bricolaje">Bricolaje</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="hobbies[]" id="hobby_cosplay" value="Cosplay">
+                        <label class="form-check-label" for="hobby_cosplay">Cosplay</label>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<button class="btn btn-primary mb-4" id="btnConsultar">Añadir Usuario</button>
+
+<div class="row mt-4">
+    <div class="col-md-9">
+        <div id="resultado"></div>
+    </div>
+    <div class="col-md-3">
+        <div id="panelEstadisticas" class="card" style="display: none;">
+            <div class="card-header bg-info text-white">
+                <strong>Estadísticas de Edad (Servidor)</strong>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Suma Total: <span id="statSuma" class="font-weight-bold">-</span></li>
+                <li class="list-group-item">Media: <span id="statMedia" class="font-weight-bold">-</span></li>
+                <li class="list-group-item">Máxima: <span id="statMax" class="font-weight-bold">-</span></li>
+                <li class="list-group-item">Mínima: <span id="statMin" class="font-weight-bold">-</span></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    let listaUsuarios = [];
+
+    function prepararTabla() {
+        if ($("#tablaUsuarios").length === 0) {
+            const $tabla = $("<table>")
+                .attr("id", "tablaUsuarios")
+                .addClass("table table-striped table-bordered table-hover");
+
+            const $thead = $("<thead>").append(
+                $("<tr>").append(
+                    ["Nombre", "Apellidos", "Edad", "Ciudad", "Hobbies"].map(texto =>
+                        $("<th>").text(texto)
+                    )
+                )
+            );
+
+            const $tbody = $("<tbody>").attr("id", "cuerpoTabla");
+
+            $tabla.append($thead).append($tbody);
+            $("#resultado").append($tabla);
+        } else {
+            $("#cuerpoTabla").empty();
+        }
+    }
+
+    $("#btnConsultar").on("click", function (event) {
+        event.preventDefault();
+
+        const campos = [
+            { id: "nombre",    label: "Nombre" },
+            { id: "apellidos", label: "Apellidos" },
+            { id: "edad",      label: "Edad" },
+            { id: "ciudad",    label: "Ciudad" }
+        ];
+
+        for (const campo of campos) {
+            if (!$("#" + campo.id).val().trim()) {
+                alert("El campo " + campo.label + " es obligatorio.");
+                $("#" + campo.id).focus();
+                return;
+            }
+        }
+
+        const hobbiesSeleccionados = $('input[name="hobbies[]"]')
+            .filter(':checked')
+            .map(function () {
+                return $(this).val();
+            }).get();
+
+        const persona = {
+            nombre:    $("#nombre").val().trim(),
+            apellidos: $("#apellidos").val().trim(),
+            edad:      parseInt($("#edad").val().trim(), 10),
+            ciudad:    $("#ciudad").val().trim(),
+            hobbies:   hobbiesSeleccionados
+        };
+
+        listaUsuarios.push(persona);
+
+        const cargaUtil = {
+            lista: listaUsuarios
+        };
+
+        // Enviamos el objeto JSON puro
+        fetch("https://lm.iesnervion.es/eco.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(cargaUtil)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Error en la respuesta del servidor.");
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Respuesta procesada:", data);
+
+                prepararTabla();
+
+                const usuariosRecibidos = (data.lista && Array.isArray(data.lista)) ? data.lista : listaUsuarios;
+
+                usuariosRecibidos.forEach((usuario, indice) => {
+                    const $fila = $("<tr>")
+                        .css("cursor", "pointer")
+                        .attr("title", "Haz clic para eliminar esta fila")
+                        .on("click", function () {
+                            listaUsuarios.splice(indice, 1);
+                            $(this).remove();
+                            if (listaUsuarios.length === 0) {
+                                $("#tablaUsuarios").remove();
+                                $("#panelEstadisticas").hide();
+                            }
+                        });
+
+                    $fila.append($("<td>").text(usuario.nombre));
+                    $fila.append($("<td>").text(usuario.apellidos));
+                    $fila.append($("<td>").text(usuario.edad));
+                    $fila.append($("<td>").text(usuario.ciudad));
+
+                    const hobbiesTexto = (usuario.hobbies && usuario.hobbies.length > 0) ? usuario.hobbies.join(", ") : "Ninguno";
+                    $fila.append($("<td>").text(hobbiesTexto));
+
+                    $("#cuerpoTabla").append($fila);
+                });
+
+                $("#panelEstadisticas").show();
+
+                if (data.calculos) {
+                    $("#statSuma").text(data.calculos.suma !== undefined ? data.calculos.suma : "0");
+                    $("#statMedia").text(data.calculos.media !== undefined ? data.calculos.media : "0");
+                    $("#statMax").text(data.calculos.max !== undefined ? data.calculos.max : "0");
+                    $("#statMin").text(data.calculos.min !== undefined ? data.calculos.min : "0");
+                } else {
+                    $("#statSuma").text("Error");
+                    $("#statMedia").text("Error");
+                    $("#statMax").text("Error");
+                    $("#statMin").text("Error");
+                }
+
+                $("#formUsuarios").trigger("reset");
+            })
+            .catch(error => {
+                console.error("Error de conexión:", error);
+                alert("Hubo un error al conectar con el servidor.");
+                listaUsuarios.pop();
+            });
+    });
+</script>
+</body>
+</html>
